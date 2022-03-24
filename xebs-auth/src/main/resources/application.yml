@@ -26,3 +26,11 @@ eureka:
     registry-fetch-interval-seconds: 3
     serviceUrl:
       defaultZone: http://xebs:123456@localhost:8001/register/eureka/
+
+xebs:
+  auth:
+    accessTokenValiditySeconds: 86400
+    refreshTokenValiditySeconds: 604800
+    clients:
+      - client: 123546
+
