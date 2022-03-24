@@ -1,0 +1,35 @@
+server:
+  port: 8301
+
+spring:
+  application:
+    name: xebs-gateway
+
+zuul:
+  routes:
+    auth:
+      path: /auth/**
+      serviceId: xebs-auth
+      sensitiveHeaders: "*"   #表示不过滤请求头信息,即请求的请求头信息将原封不动的转发出去
+  retryable: true     #设置为true时，表示开启重试机制
+  ignored-services: "*"  #Zuul配合Eureka后会有一套默认的配置规则，这里我们只想请求根据我们显示配置的路由规则走，所以设置为*，表示关闭所有默认路由配置规则
+  ribbon:
+    eager-load:
+      enabled: true
+
+ribbon:
+  ReadTimeout: 3000
+
+
+
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 20
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    instance-info-replication-interval-seconds: 30
+    registry-fetch-interval-seconds: 3
+    serviceUrl:
+      defaultZone: http://xebs:123456@localhost:8001/register/eureka/

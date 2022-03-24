@@ -1,0 +1,22 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /register
+
+spring:
+  application:
+    name: xebs-register   #定义服务名称
+  security:
+    user:
+      name: xebs
+      password: 123456
+
+eureka:
+  instance:
+    hostname: localhost  #指定了Eureka服务端的地址，因为我们是在本地搭建的，所以填写为localhost即可
+  client:
+    register-with-eureka: false  #表示是否将服务注册到Eureka服务端，由于我们这里是单节点的Eureka服务端，所以这里指定false
+    fetch-registry: false
+    instance-info-replication-interval-seconds: 30
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@${eureka.instance.hostname}:${server.port}${server.servlet.context-path}/eureka/

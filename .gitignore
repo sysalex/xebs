@@ -1,0 +1,37 @@
+# maven #
+target
+
+afrLogs
+
+# windows #
+Thumbs.db
+
+# Mac #
+.DS_Store
+
+# eclipse #
+.settings
+.project
+.classpath
+.afrLog
+*.class
+
+# idea #
+.idea
+*.iml
+
+# http test #
+http-*.json
+
+# Package Files #
+*.jar
+*.war
+*.ear
+/target
+/.svn
+*.svn
+*.pdb
+*.log
+logPath_IS_UNDEFINED/ces-ois-adaptor/ces-ois-adaptor.afrLog
+/log/
+/logs/
