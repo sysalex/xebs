@@ -3,6 +3,7 @@ package cc.alex.xebs.configure;
 import cc.alex.xebs.properties.xebsAuthProperties;
 import cc.alex.xebs.properties.XebsClientsProperties;
 import cc.alex.xebs.service.XebsUserDetailService;
+import cc.alex.xebs.translator.XebsWebResponseExceptionTranslator;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class XebsAuthorizationServerConfigure extends AuthorizationServerConfigu
     private XebsUserDetailService userDetailService;
     @Autowired
     private xebsAuthProperties authProperties;
+    @Autowired
+    private XebsWebResponseExceptionTranslator exceptionTranslator;
 
 
     @Override
@@ -63,7 +66,8 @@ public class XebsAuthorizationServerConfigure extends AuthorizationServerConfigu
         endpoints.tokenStore(tokenStore())
                 .userDetailsService(userDetailService)
                 .authenticationManager(authenticationManager)
-                .tokenServices(defaultTokenServices());
+                .tokenServices(defaultTokenServices())
+                .exceptionTranslator(exceptionTranslator);
     }
 
     @Bean
