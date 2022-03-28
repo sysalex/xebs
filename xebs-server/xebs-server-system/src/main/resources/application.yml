@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: xebs-server-system
+  main:
+    allow-bean-definition-overriding: true
 
 
 security:
