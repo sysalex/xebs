@@ -1,7 +1,7 @@
 package cc.alex.xebs.auth.configure;
 
 import cc.alex.xebs.auth.service.XebsUserDetailService;
-import cc.alex.xebs.auth.properties.xebsAuthProperties;
+import cc.alex.xebs.auth.properties.XebsAuthProperties;
 import cc.alex.xebs.auth.properties.XebsClientsProperties;
 import cc.alex.xebs.auth.translator.XebsWebResponseExceptionTranslator;
 import org.apache.commons.lang3.ArrayUtils;
@@ -35,7 +35,7 @@ public class XebsAuthorizationServerConfigure extends AuthorizationServerConfigu
     @Autowired
     private XebsUserDetailService userDetailService;
     @Autowired
-    private xebsAuthProperties authProperties;
+    private XebsAuthProperties authProperties;
     @Autowired
     private XebsWebResponseExceptionTranslator exceptionTranslator;
 

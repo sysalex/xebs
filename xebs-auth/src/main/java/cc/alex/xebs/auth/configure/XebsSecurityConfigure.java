@@ -1,5 +1,6 @@
 package cc.alex.xebs.auth.configure;
 
+import cc.alex.xebs.auth.filter.ValidateCodeFilter;
 import cc.alex.xebs.auth.service.XebsUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +10,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * 认证服务器
@@ -26,6 +27,9 @@ public class XebsSecurityConfigure extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ValidateCodeFilter validateCodeFilter;
+
 
     @Bean
     @Override
@@ -36,7 +40,8 @@ public class XebsSecurityConfigure extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers()
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .requestMatchers()
                 .antMatchers("/oauth/**")  // 只对/oauth/开头的请求有效
                 .and()
                 .authorizeRequests()

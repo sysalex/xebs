@@ -1,7 +1,9 @@
 package cc.alex.xebs.auth.configure;
 
+import cc.alex.xebs.auth.properties.XebsAuthProperties;
 import cc.alex.xebs.common.handler.XebsAccessDeniedHandler;
 import cc.alex.xebs.common.handler.XebsAuthExceptionEntryPoint;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,13 +24,18 @@ public class XebsResourceServerConfigure extends ResourceServerConfigurerAdapter
     private XebsAccessDeniedHandler accessDeniedHandler;
     @Autowired
     private XebsAuthExceptionEntryPoint exceptionEntryPoint;
+    @Autowired
+    private XebsAuthProperties properties;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+        String[] anonUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(properties.getAnonUrl(), ",");
+
         http.csrf().disable()
                 .requestMatchers().antMatchers("/**") //对所有请求都生效
                 .and()
                 .authorizeRequests()
+                .antMatchers(anonUrls).permitAll()  //放行
                 .antMatchers("/**").authenticated();
     }
 

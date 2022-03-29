@@ -1,6 +1,7 @@
 package cc.alex.xebs.common.handler;
 
 import cc.alex.xebs.common.entity.XebsResponse;
+import cc.alex.xebs.common.exception.ValidateCodeException;
 import cc.alex.xebs.common.exception.XebsAuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,13 @@ public class BaseExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public XebsResponse handleXebsAuthException(XebsAuthException e) {
         log.error("系统错误", e);
+        return new XebsResponse().message(e.getMessage());
+    }
+
+    @ExceptionHandler(value = ValidateCodeException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public XebsResponse handleValidateCodeException(ValidateCodeException e) {
+        log.error("验证码错误", e);
         return new XebsResponse().message(e.getMessage());
     }
 
