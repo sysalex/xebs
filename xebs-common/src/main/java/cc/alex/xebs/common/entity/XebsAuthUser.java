@@ -1,22 +1,50 @@
 package cc.alex.xebs.common.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
-import java.io.Serializable;
+import java.util.Collection;
+import java.util.Date;
 
 @Data
-public class XebsAuthUser implements Serializable {
-    private static final long serialVersionUID = -1748289340320186418L;
+@EqualsAndHashCode(callSuper = true)
+public class XebsAuthUser extends User {
 
-    private String username;
 
-    private String password;
+    private static final long serialVersionUID = -6411066541689297219L;
 
-    private boolean accountNonExpired = true;
+    private Long userId;
 
-    private boolean accountNonLocked= true;
+    private String avatar;
 
-    private boolean credentialsNonExpired= true;
+    private String email;
 
-    private boolean enabled= true;
+    private String mobile;
+
+    private String sex;
+
+    private Long deptId;
+
+    private String deptName;
+
+    private String roleId;
+
+    private String roleName;
+
+    private Date lastLoginTime;
+
+    private String description;
+
+    private String status;
+
+    public XebsAuthUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, authorities);
+    }
+
+    public XebsAuthUser(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+    }
+
 }

@@ -4,11 +4,14 @@ server:
 spring:
   application:
     name: xebs-server-test
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 feign:
   hystrix:
     enabled: true
 hystrix:
   shareSecurityContext: true   #配置把SecurityContext对象从你当前主线程传输到Hystrix线程。
+
 
 eureka:
   instance:
