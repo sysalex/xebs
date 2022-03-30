@@ -2,12 +2,34 @@ server:
   port: 8201
 
 spring:
-  application:
-    name: xebs-server-system
   main:
     allow-bean-definition-overriding: true
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  application:
+    name: xebs-server-system
+  datasource:
+    dynamic:
+      hikari:
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        max-pool-size: 15
+        min-idle: 5
+        connection-test-query: select 1
+        pool-name: XebsHikariCP
+      primary: base
+      datasource:
+        base:
+          username: root
+          password: 183759
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3306/xebs_cloud_base?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+      p6spy: true
+mybatis-plus:
+  type-aliases-package: cc.alex.xebs.common.entity.system
+  mapper-locations: classpath:mapper/*/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    banner: false
 
 
 security:
