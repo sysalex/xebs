@@ -1,0 +1,16 @@
+server:
+  port: 8401
+
+spring:
+  application:
+    name: xebs-monitor-admin
+  boot:
+    admin:
+      ui:
+        title: ${spring.application.name}
+  security:
+    user:
+      name: xebs
+      password: 123456
+
+

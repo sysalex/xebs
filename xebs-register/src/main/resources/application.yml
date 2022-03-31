@@ -10,6 +10,26 @@ spring:
     user:
       name: xebs
       password: 123456
+  boot:
+    admin:
+      client:
+        url: http://localhost:8401  #指定了SBA服务端地址
+        username: xebs              #对应SBA服务端的用户名
+        password: 123456            #对应SBA服务端的密码
+info: #配置了SBA客户端的名称，描述和版本信息
+  app:
+    name: ${spring.application.name}
+    description: "@project.description@"
+    version: "@project.version@"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'   #表示将SBA客户端的所有监控端点都暴露给SBA服务端
+  endpoint:
+    health:
+      show-details: ALWAYS   #表示总是展示详细的健康信息
 
 eureka:
   instance:

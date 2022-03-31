@@ -15,6 +15,7 @@
         <module>xebs-auth</module>
         <module>xebs-gateway</module>
         <module>xebs-server</module>
+        <module>xebs-monitor</module>
     </modules>
 
     <name>xebs-cloud</name>

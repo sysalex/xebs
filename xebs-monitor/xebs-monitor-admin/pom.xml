@@ -3,30 +3,33 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>xebs-cloud</artifactId>
         <groupId>cc.alex</groupId>
+        <artifactId>xebs-monitor</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>xebs-register</artifactId>
-    <name>xebs-register</name>
-    <description>xebs-cloud服务注册中心</description>
+    <artifactId>xebs-monitor-admin</artifactId>
+    <name>xebs-monitor-admin</name>
+    <description>xebs-monitor-admin基于spring boot admin搭建的监控程序</description>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-security</artifactId>
         </dependency>
-
         <dependency>
             <groupId>de.codecentric</groupId>
-            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <artifactId>spring-boot-admin-server</artifactId>
+            <version>2.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-server-ui</artifactId>
             <version>2.1.6</version>
         </dependency>
     </dependencies>
@@ -39,5 +42,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

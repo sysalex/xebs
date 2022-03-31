@@ -24,6 +24,7 @@ public class XebsServerTestResourceServerConfigure extends ResourceServerConfigu
                 .requestMatchers().antMatchers("/**") //对所有请求都生效
                 .and()
                 .authorizeRequests()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/**").authenticated();
     }
 
