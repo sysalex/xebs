@@ -23,6 +23,17 @@ spring:
           driver-class-name: com.mysql.cj.jdbc.Driver
           url: jdbc:mysql://localhost:3306/xebs_cloud_base?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
       p6spy: true
+  zipkin:
+    sender:
+      type: rabbit
+  sleuth:
+    sampler:
+      probability: 1
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: xebs
+    password: 123456
 
   boot:
     admin:

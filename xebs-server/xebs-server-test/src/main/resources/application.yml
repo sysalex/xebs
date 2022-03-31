@@ -12,6 +12,18 @@ spring:
         url: http://localhost:8401
         username: xebs
         password: 123456
+  zipkin:
+    sender:
+      type: rabbit
+  sleuth:
+    sampler:
+      probability: 1
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: xebs
+    password: 123456
+
 info:
   app:
     name: ${spring.application.name}
