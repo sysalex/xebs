@@ -4,12 +4,10 @@ server:
 spring:
   application:
     name: xebs-server-test
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration
   boot:
     admin:
       client:
-        url: http://localhost:8401
+        url: http://${xebs-monitor-admin}:8401
         username: xebs
         password: 123456
   zipkin:
@@ -19,10 +17,36 @@ spring:
     sampler:
       probability: 1
   rabbitmq:
-    host: localhost
+    host: ${rabbitmq.url}
     port: 5672
     username: xebs
     password: 123456
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceAutoConfiguration,org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 20
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    instance-info-replication-interval-seconds: 30
+    registry-fetch-interval-seconds: 3
+    serviceUrl:
+      defaultZone: http://xebs:123456@${xebs-register}:8001/register/eureka/
+
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      user-info-uri: http://${xebs-gateway}:8301/auth/user
+
+feign:
+  hystrix:
+    enabled: true
+
+hystrix:
+  shareSecurityContext: true
 
 info:
   app:
@@ -38,27 +62,3 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-
-feign:
-  hystrix:
-    enabled: true
-hystrix:
-  shareSecurityContext: true   #配置把SecurityContext对象从你当前主线程传输到Hystrix线程。
-
-
-eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 20
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    instance-info-replication-interval-seconds: 30
-    registry-fetch-interval-seconds: 3
-    serviceUrl:
-      defaultZone: http://xebs:123456@localhost:8001/register/eureka/
-security:
-  oauth2:
-    resource:
-      id: ${spring.application.name}
-      user-info-uri: http://localhost:8301/auth/user
-

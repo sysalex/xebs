@@ -2,12 +2,28 @@ server:
   port: 8201
 
 spring:
-  main:
-    allow-bean-definition-overriding: true
   application:
     name: xebs-server-system
+  boot:
+    admin:
+      client:
+        url: http://${xebs-monitor-admin}:8401
+        username: xebs
+        password: 123456
+  zipkin:
+    sender:
+      type: rabbit
+  sleuth:
+    sampler:
+      probability: 1
+  rabbitmq:
+    host: ${rabbitmq.url}
+    port: 5672
+    username: xebs
+    password: 123456
   datasource:
     dynamic:
+      p6spy: true
       hikari:
         connection-timeout: 30000
         max-lifetime: 1800000
@@ -21,26 +37,33 @@ spring:
           username: root
           password: 183759
           driver-class-name: com.mysql.cj.jdbc.Driver
-          url: jdbc:mysql://localhost:3306/xebs_cloud_base?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
-      p6spy: true
-  zipkin:
-    sender:
-      type: rabbit
-  sleuth:
-    sampler:
-      probability: 1
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: xebs
-    password: 123456
+          url: jdbc:mysql://${mysql.url}:3306/xebs_cloud_base?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
 
-  boot:
-    admin:
-      client:
-        url: http://localhost:8401
-        username: xebs
-        password: 123456
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 20
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    instance-info-replication-interval-seconds: 30
+    serviceUrl:
+      defaultZone: http://xebs:123456@${xebs-register}:8001/register/eureka/
+
+security:
+  oauth2:
+    resource:
+      id: ${spring.application.name}
+      user-info-uri: http://${xebs-gateway}:8301/auth/user
+
+mybatis-plus:
+  type-aliases-package: cc.alex.xebs.common.entity.system
+  mapper-locations: classpath:mapper/*/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    banner: false
 
 info:
   app:
@@ -56,28 +79,3 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-
-mybatis-plus:
-  type-aliases-package: cc.alex.xebs.common.entity.system
-  mapper-locations: classpath:mapper/*/*.xml
-  configuration:
-    jdbc-type-for-null: null
-  global-config:
-    banner: false
-
-
-security:
-  oauth2:
-    resource:
-      id: ${spring.application.name}
-      user-info-uri: http://localhost:8301/auth/user
-
-eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 20
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    instance-info-replication-interval-seconds: 30
-    serviceUrl:
-      defaultZone: http://xebs:123456@localhost:8001/register/eureka/

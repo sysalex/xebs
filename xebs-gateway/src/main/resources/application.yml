@@ -4,14 +4,52 @@ server:
 spring:
   application:
     name: xebs-gateway
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   boot:
     admin:
       client:
-        url: http://localhost:8401
+        url: http://${xebs-monitor-admin}:8401
         username: xebs
-        password: 123456
+        password: 183759
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+
+eureka:
+  instance:
+    lease-renewal-interval-in-seconds: 20
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    instance-info-replication-interval-seconds: 30
+    registry-fetch-interval-seconds: 3
+    serviceUrl:
+      defaultZone: http://xebs:123456@${xebs-register}:8001/register/eureka/
+
+zuul:
+  routes:
+    auth:
+      path: /auth/**
+      serviceId: xebs-auth
+      sensitiveHeaders: "*"
+    system:
+      path: /system/**
+      serviceId: xebs-server-system
+      sensitiveHeaders: "*"
+    test:
+      path: /test/**
+      serviceId: xebs-server-test
+      sensitiveHeaders: "*"
+  retryable: true
+  ignored-services: "*"
+  ribbon:
+    eager-load:
+      enabled: true
+  SendErrorFilter:
+    error:
+      disable: true
+
+ribbon:
+  ReadTimeout: 3000
+
 info:
   app:
     name: ${spring.application.name}
@@ -26,41 +64,3 @@ management:
   endpoint:
     health:
       show-details: ALWAYS
-
-zuul:
-  routes:
-    auth:
-      path: /auth/**
-      serviceId: xebs-auth
-      sensitiveHeaders: "*"   #表示不过滤请求头信息,即请求的请求头信息将原封不动的转发出去
-    system:
-      path: /system/**
-      serviceId: xebs-server-system
-      sensitiveHeaders: "*"
-    test:
-      path: /test/**
-      serviceId: xebs-server-test
-      sensitiveHeaders: "*"
-  SendErrorFilter:
-    error:
-      disable: true   #自定义的Zuul异常过滤器生效
-  retryable: true     #设置为true时，表示开启重试机制
-  ignored-services: "*"  #Zuul配合Eureka后会有一套默认的配置规则，这里我们只想请求根据我们显示配置的路由规则走，所以设置为*，表示关闭所有默认路由配置规则
-  ribbon:
-    eager-load:
-      enabled: true
-
-ribbon:
-  ReadTimeout: 3000
-
-
-eureka:
-  instance:
-    lease-renewal-interval-in-seconds: 20
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    instance-info-replication-interval-seconds: 30
-    registry-fetch-interval-seconds: 3
-    serviceUrl:
-      defaultZone: http://xebs:123456@localhost:8001/register/eureka/
